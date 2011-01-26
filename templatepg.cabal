@@ -1,0 +1,45 @@
+Name:          templatepg
+Version:       0.2.0
+Cabal-Version: >= 1.2.3
+License:       BSD3
+License-File:  COPYING
+Copyright:     2010, 2011 Chris Forno
+Author:        Chris Forno (jekor)
+Maintainer:    jekor@jekor.com
+Stability:     alpha
+Bug-Reports:   mailto:jekor@jekor.com
+Package-URL:   http://jekor.com/templatepg/templatepg-0.2.0.tar.gz
+Category:      Database
+Synopsis:      A PostgreSQL access library with compile-time SQL type inference
+Description:   TemplatePG provides PostgreSQL access from Haskell via the
+               PostgreSQL protocol. It also provides a higher-level Template
+               Haskell interface. It eliminates a class of runtime errors by
+               checking queries against a PostgreSQL database at compile-time.
+               This also reduces boilerplate code for dealing with query
+               results, as the type and number of result columns are known at
+               compile-time.
+Tested-With:   GHC == 7.0
+Build-Type:    Simple
+
+Library
+  Build-Depends:
+    base >= 4 && < 6,
+    binary,
+    bytestring,
+    haskell98,
+    haskell-src-meta,
+    mtl,
+    network,
+    parsec,
+    regex-compat,
+    regex-posix,
+    template-haskell,
+    time,
+    utf8-string
+  Exposed-Modules:
+    Database.TemplatePG
+    Database.TemplatePG.Protocol
+    Database.TemplatePG.SQL
+    Database.TemplatePG.Types
+  Extensions: TemplateHaskell, ExistentialQuantification, DeriveDataTypeable
+  GHC-Options: -Wall
