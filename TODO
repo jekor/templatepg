@@ -1,0 +1,7 @@
+* Bail when standard_conforming_string is off (can be seen in connection details returned from server).
+* Handle bounds for integers better (automatically allow anything smaller through, but block bigger values).
+* Add support for returning records (instead of tuples).
+* Make insertIgnore useable in transactions.
+* On disconnect, send a close message?
+* Figure out how to make withTransaction useable in other monads.
+* Add support for enumerated types (look in pg_enum with unknown types).
