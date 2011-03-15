@@ -7,7 +7,8 @@ Copyright:     2010, 2011 Chris Forno
 Author:        Chris Forno (jekor)
 Maintainer:    jekor@jekor.com
 Stability:     alpha
-Bug-Reports:   mailto:jekor@jekor.com
+Bug-Reports:   https://github.com/jekor/templatepg/issues
+Homepage:      https://github.com/jekor/templatepg
 Package-URL:   http://jekor.com/templatepg/templatepg-0.2.0.tar.gz
 Category:      Database
 Synopsis:      A PostgreSQL access library with compile-time SQL type inference
