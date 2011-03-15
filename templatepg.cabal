@@ -43,4 +43,4 @@ Library
     Database.TemplatePG.SQL
     Database.TemplatePG.Types
   Extensions: TemplateHaskell, ExistentialQuantification, DeriveDataTypeable
-  GHC-Options: -Wall
+  GHC-Options: -Wall -O2
