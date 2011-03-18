@@ -13,7 +13,6 @@ import Data.Time.Clock
 import Data.Time.Format
 import Language.Haskell.TH
 import Locale
-import Text.ParserCombinators.Parsec
 import Text.Regex
 
 -- |TemplatePG currenly only supports a handful of types. It also doesn't
@@ -90,7 +89,7 @@ pgStringToType PGBoolean     = [| \s -> case s of
                                           "f" -> False
                                           _   -> error "unrecognized boolean type from PostgreSQL" |]
 pgStringToType PGTimestampTZ = [| \t -> readTime defaultTimeLocale pgTimestampTZFormat (t ++ "00") |]
-pgStringToType PGDate        = [| parseGregorian |]
+pgStringToType PGDate        = [| readTime defaultTimeLocale "%F" |]
 pgStringToType PGInterval    = error "Reading PostgreSQL intervals isn't supported (yet)."
 
 -- |Make a string safe for interpolation (escape single-quotes). This relies on
@@ -99,19 +98,3 @@ pgStringToType PGInterval    = error "Reading PostgreSQL intervals isn't support
 -- inject SQL with strange (possibly Unicode) characters.
 escapeString :: String -> String
 escapeString s = "'" ++ (subRegex (mkRegex "'") s "''") ++ "'"
-
-parseGregorian :: String -> Day
-parseGregorian date = case (parse gregorianDate "" date) of
-                        Left err        -> error (show err)
-                        Right (y, m, d) -> case fromGregorianValid y m d of
-                                             Nothing  -> error $ "Invalid date " ++ date
-                                             Just day -> day
-
-gregorianDate :: Parser (Integer, Int, Int)
-gregorianDate = do
-  year <- count 4 digit
-  _ <- char '-'
-  month <- count 2 digit
-  _ <- char '-'
-  day <- count 2 digit
-  return (read year, read month, read day)
