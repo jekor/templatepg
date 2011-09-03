@@ -1,0 +1,1 @@
+* Fix defect when trying to use Days for timestamp fields (the last digit of dates are truncated). Temporary workaround: bind parameters to date manually (e.g. {haskellDay}::date).
