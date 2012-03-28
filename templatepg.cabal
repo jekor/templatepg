@@ -3,7 +3,7 @@ Version:       0.2.0
 Cabal-Version: >= 1.2.3
 License:       BSD3
 License-File:  COPYING
-Copyright:     2010, 2011 Chris Forno
+Copyright:     2010, 2011, 2012 Chris Forno
 Author:        Chris Forno (jekor)
 Maintainer:    jekor@jekor.com
 Stability:     alpha
@@ -19,7 +19,7 @@ Description:   TemplatePG provides PostgreSQL access from Haskell via the
                This also reduces boilerplate code for dealing with query
                results, as the type and number of result columns are known at
                compile-time.
-Tested-With:   GHC == 7.0
+Tested-With:   GHC == 7.0.2
 Build-Type:    Simple
 
 Library
