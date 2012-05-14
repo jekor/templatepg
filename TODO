@@ -5,3 +5,17 @@
 * On disconnect, send a close message?
 * Figure out how to make withTransaction useable in other monads.
 * Add support for enumerated types (look in pg_enum with unknown types).
+* Add explicit casts to all values going in:
+    $(execute
+      "UPDATE link_to_review \
+      \SET target_time = {reviewedAt} + {diff} \
+      \WHERE member_no = {memberNumber member} AND link_no = {linkNo}") h
+
+reviewedAt is a UTCTime and diff is a DiffTime, but to PostgreSQL it's ambigious (PGException "42725" "operator is not unique: unknown + unknown"). To fix it:
+
+    $(execute
+      "UPDATE link_to_review \
+      \SET target_time = {reviewedAt}::timestamp with time zone + {diff}::interval \
+      \WHERE member_no = {memberNumber member} AND link_no = {linkNo}") h
+
+But easier for the programmer would be to have TemplatePG add explicit casts to all values it sends in. This is probably safer in the long run as well, although possibly less flexible.

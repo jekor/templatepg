@@ -19,7 +19,7 @@ Description:   TemplatePG provides PostgreSQL access from Haskell via the
                This also reduces boilerplate code for dealing with query
                results, as the type and number of result columns are known at
                compile-time.
-Tested-With:   GHC == 7.0.2
+Tested-With:   GHC == 7.4.1
 Build-Type:    Simple
 
 Library
@@ -27,10 +27,10 @@ Library
     base >= 4 && < 6,
     binary,
     bytestring,
-    haskell98,
     haskell-src-meta,
     mtl,
     network,
+    old-locale,
     parsec,
     regex-compat,
     regex-posix,
