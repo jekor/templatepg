@@ -1,6 +1,6 @@
 Name:          templatepg
 Version:       0.2.2
-Cabal-Version: >= 1.2.3
+Cabal-Version: >= 1.4
 License:       BSD3
 License-File:  COPYING
 Copyright:     2010, 2011, 2012 Chris Forno
