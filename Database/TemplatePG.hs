@@ -1,4 +1,4 @@
--- Copyright 2010, 2011 Chris Forno
+-- Copyright 2010, 2011, 2012 Chris Forno
 
 module Database.TemplatePG (-- *Introduction
                             -- $intro
@@ -63,6 +63,8 @@ import Database.TemplatePG.SQL
 -- we know the types of parameters at compile time. However, it still feels
 -- risky (and I would appreciate any audit of the code doing this, especially
 -- 'escapeString').
+--
+-- Note that you'll need to use -XConstraintKinds to use TemplatePG.
 
 -- $usage
 -- 'queryTuples' does all the work ('queryTuple' and 'execute' are convenience

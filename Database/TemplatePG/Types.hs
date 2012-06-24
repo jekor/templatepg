@@ -59,13 +59,16 @@ pgTypeFromOID n    = error $ "Unknown PostgreSQL type: " ++ show n
 pgTimestampTZFormat :: String
 pgTimestampTZFormat = "%F %T%z"
 
+type ShowIntegral a = (Integral a, Show a)
+type ShowReal a = (Real a, Show a)
+
 -- |Convert a Haskell value to a string of the given PostgreSQL type. Or, more
 -- accurately, given a PostgreSQL type, create a function for converting
 -- compatible Haskell values into a string of that type.
 -- @pgTypeToString :: PGType -> (? -> String)@
 pgTypeToString :: PGType -> Q Exp
-pgTypeToString PGInteger     = [| show::(Integral a => a -> String) |]
-pgTypeToString PGReal        = [| show::(Real a => a -> String) |]
+pgTypeToString PGInteger     = [| show::(ShowIntegral a => a -> String) |]
+pgTypeToString PGReal        = [| show::(ShowReal a => a -> String) |]
 pgTypeToString PGText        = [| escapeString |]
 pgTypeToString PGBoolean     = [| (\ b -> if b then "'t'" else "'f'") |]
 pgTypeToString PGTimestampTZ = [| \t -> let ts = formatTime defaultTimeLocale pgTimestampTZFormat t in

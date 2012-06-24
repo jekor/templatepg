@@ -1,3 +1,4 @@
+* See if we can get rid of -XConstraintKinds (ShowIntegral and ShowReal).
 * Bail when standard_conforming_string is off (can be seen in connection details returned from server).
 * Handle bounds for integers better (automatically allow anything smaller through, but block bigger values).
 * Add support for returning records (instead of tuples).

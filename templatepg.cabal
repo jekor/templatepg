@@ -1,5 +1,5 @@
 Name:          templatepg
-Version:       0.2.0
+Version:       0.2.1
 Cabal-Version: >= 1.2.3
 License:       BSD3
 License-File:  COPYING
@@ -42,5 +42,8 @@ Library
     Database.TemplatePG.Protocol
     Database.TemplatePG.SQL
     Database.TemplatePG.Types
-  Extensions: TemplateHaskell, ExistentialQuantification, DeriveDataTypeable
+  Extensions: ConstraintKinds,
+              DeriveDataTypeable,
+              ExistentialQuantification,
+              TemplateHaskell
   GHC-Options: -Wall -O2
