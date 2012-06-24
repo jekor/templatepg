@@ -46,4 +46,4 @@ Library
               DeriveDataTypeable,
               ExistentialQuantification,
               TemplateHaskell
-  GHC-Options: -Wall -O2
+  GHC-Options: -Wall
