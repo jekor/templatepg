@@ -1,4 +1,4 @@
--- Copyright 2010, 2011 Chris Forno
+-- Copyright 2010, 2011, 2012 Chris Forno
 
 -- |The Protocol module allows for direct, low-level communication with a
 --  PostgreSQL server over TCP/IP. You probably don't want to use this module
@@ -311,7 +311,7 @@ describeStatement h sql = do
        then return True
        -- In cases where the resulting field is tracable to the column of a
        -- table, we can check there.
-       else do r <- executeSimpleQuery h ("SELECT attnotnull FROM pg_attribute WHERE attrelid = " ++ show oid ++ " AND attnum = " ++ show col)
+       else do r <- executeSimpleQuery ("SELECT attnotnull FROM pg_attribute WHERE attrelid = " ++ show oid ++ " AND attnum = " ++ show col) h
                case r of
                  [[Just s]] -> return $ case toString s of
                                           "t" -> False
@@ -323,12 +323,12 @@ describeStatement h sql = do
 -- message to the PostgreSQL server. The query is sent as a single string; you
 -- cannot bind parameters. Note that queries can return 0 results (an empty
 -- list).
-executeSimpleQuery :: Handle
-                   -> String                    -- ^ SQL string
+executeSimpleQuery :: String                    -- ^ SQL string
+                   -> Handle
                    -> IO ([[Maybe ByteString]]) -- ^ A list of result rows,
                                                 -- which themselves are a list
                                                 -- of fields.
-executeSimpleQuery h sql = do
+executeSimpleQuery sql h = do
   pgSend h $ SimpleQuery sql
   m <- pgWaitFor h $ map c2w ['C', 'I', 'T']
   case m of
@@ -345,10 +345,10 @@ executeSimpleQuery h sql = do
 
 -- |While not strictly necessary, this can make code a little bit clearer. It
 -- executes a 'SimpleQuery' but doesn't look for results.
-executeSimpleStatement :: Handle
-                       -> String -- ^ SQL string
+executeSimpleStatement :: String -- ^ SQL string
+                       -> Handle
                        -> IO ()
-executeSimpleStatement h sql = do
+executeSimpleStatement sql h = do
   pgSend h $ SimpleQuery sql
   m <- pgWaitFor h $ map c2w ['C', 'I']
   case m of

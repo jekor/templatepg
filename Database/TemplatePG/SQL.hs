@@ -61,7 +61,7 @@ prepareSQL sql = do
   -- TODO: It's a bit silly to establish a connection for every query to be
   -- analyzed.
   h <- runIO thConnection
-  let (sqlStrings, expStrings) = parseSql sql  
+  let (sqlStrings, expStrings) = parseSql sql
   (pTypes, fTypes) <- runIO $ describeStatement h $ holdPlaces sqlStrings expStrings
   s <- weaveString sqlStrings =<< zipWithM stringify pTypes expStrings
   return (s, fTypes)
@@ -98,8 +98,7 @@ weaveString _      _      = error "Weave mismatch (possible parse problem)"
 queryTuples :: String -> Q Exp
 queryTuples sql = do
   (sql', types) <- prepareSQL sql
-  [| \h' -> do rs <- executeSimpleQuery h' $(returnQ sql')
-               return $ map $(convertRow types) rs |]
+  [| liftM (map $(convertRow types)) . executeSimpleQuery $(returnQ sql') |]
 
 -- |@queryTuple :: String -> (Handle -> IO (Maybe (column1, column2, ...)))@
 -- 
@@ -114,10 +113,11 @@ queryTuples sql = do
 -- 
 -- @=> IO (Maybe (Maybe String, Maybe Integer))@
 queryTuple :: String -> Q Exp
-queryTuple sql = [| \h' -> do ts <- $(queryTuples sql) h'
-                              case ts of
-                                []    -> return Nothing
-                                (t:_) -> return $ Just t |]
+queryTuple sql = [| liftM maybeHead . $(queryTuples sql) |]
+
+maybeHead :: [a] -> Maybe a
+maybeHead []    = Nothing
+maybeHead (x:_) = Just x
 
 -- |@execute :: String -> (Handle -> IO ())@
 -- 
@@ -134,7 +134,7 @@ execute :: String -> Q Exp
 execute sql = do
   (sql', types) <- prepareSQL sql
   case types of
-    [] -> [| \h' -> executeSimpleStatement h' $(returnQ sql') |]
+    [] -> [| executeSimpleStatement $(returnQ sql') |]
     _  -> error "Execute can't be used on queries, only statements."
 
 -- |Run a sequence of IO actions (presumably SQL statements) wrapped in a
@@ -143,15 +143,15 @@ execute sql = do
 -- 'MonadPeelIO' version. Untested.
 withTransaction :: Handle -> IO a -> IO a
 withTransaction h a =
-  onException (do executeSimpleStatement h "BEGIN"
+  onException (do executeSimpleStatement "BEGIN" h
                   c <- a
-                  executeSimpleStatement h "COMMIT"
+                  executeSimpleStatement "COMMIT" h
                   return c)
-              (executeSimpleStatement h "ROLLBACK")
+              (executeSimpleStatement "ROLLBACK" h)
 
 -- |Roll back a transaction. Untested.
 rollback :: Handle -> IO ()
-rollback h = executeSimpleStatement h "ROLLBACK"
+rollback = executeSimpleStatement "ROLLBACK"
 
 -- |Run an INSERT statement, ignoring duplicate key errors. This is also
 -- limited to the 'IO' Monad. Untested.
@@ -165,8 +165,10 @@ insertIgnore q = catchJust uniquenessError q (\ _ -> return ())
 -- |Given a result description, create a function to convert a result to a
 -- tuple.
 convertRow :: [(String, PGType, Bool)] -- ^ result description
-           -> Q Exp
-convertRow types = [| (\s -> $(tupE $ map (convertColumn 's) $ zip types [0..])) |]
+           -> Q Exp -- ^ A function for converting a row of the given result description
+convertRow types = do
+  n <- newName "result"
+  lamE [varP n] $ tupE $ map (convertColumn n) $ zip types [0..]
 
 -- |Given a raw PostgreSQL result and a result field type, convert the
 -- appropriate field to a Haskell value.
