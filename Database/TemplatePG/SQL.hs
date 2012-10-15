@@ -140,7 +140,7 @@ execute sql = do
 -- |Run a sequence of IO actions (presumably SQL statements) wrapped in a
 -- transaction. Unfortunately you're restricted to using this in the 'IO'
 -- Monad for now due to the use of 'onException'. I'm debating adding a
--- 'MonadPeelIO' version. Untested.
+-- 'MonadPeelIO' version.
 withTransaction :: Handle -> IO a -> IO a
 withTransaction h a =
   onException (do executeSimpleStatement "BEGIN" h
@@ -149,7 +149,7 @@ withTransaction h a =
                   return c)
               (executeSimpleStatement "ROLLBACK" h)
 
--- |Roll back a transaction. Untested.
+-- |Roll back a transaction.
 rollback :: Handle -> IO ()
 rollback = executeSimpleStatement "ROLLBACK"
 
