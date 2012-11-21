@@ -92,9 +92,10 @@ weaveString _      _      = error "Weave mismatch (possible parse problem)"
 -- 
 -- Example (where @h@ is a handle from 'pgConnect'):
 -- 
--- @$(queryTuples \"SELECT usesysid, usename FROM pg_user\") h@
+-- @$(queryTuples \"SELECT usesysid, usename FROM pg_user\") h
 -- 
--- @=> IO [(Maybe String, Maybe Integer)]@
+-- => IO [(Maybe String, Maybe Integer)]
+-- @
 queryTuples :: String -> Q Exp
 queryTuples sql = do
   (sql', types) <- prepareSQL sql
@@ -107,11 +108,12 @@ queryTuples sql = do
 -- 
 -- Example (where @h@ is a handle from 'pgConnect'):
 -- 
--- @let sysid = 10::Integer;@
+-- @let sysid = 10::Integer;
 -- 
--- @$(queryTuple \"SELECT usesysid, usename FROM pg_user WHERE usesysid = {sysid}\") h@
+-- $(queryTuple \"SELECT usesysid, usename FROM pg_user WHERE usesysid = {sysid}\") h
 -- 
--- @=> IO (Maybe (Maybe String, Maybe Integer))@
+-- => IO (Maybe (Maybe String, Maybe Integer))
+-- @
 queryTuple :: String -> Q Exp
 queryTuple sql = [| liftM maybeHead . $(queryTuples sql) |]
 
@@ -125,11 +127,10 @@ maybeHead (x:_) = Just x
 -- 
 -- Example (where @h@ is a handle from 'pgConnect'):
 -- 
--- @let rolename = \"BOfH\"@
+-- @let rolename = \"BOfH\"
 -- 
--- @$(execute \"CREATE ROLE {rolename}\") h@
--- 
--- @=> IO ()@
+-- $(execute \"CREATE ROLE {rolename}\") h
+-- @
 execute :: String -> Q Exp
 execute sql = do
   (sql', types) <- prepareSQL sql

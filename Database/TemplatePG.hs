@@ -16,6 +16,9 @@ module Database.TemplatePG (-- *Introduction
                             -- **A Note About NULL
                             -- $nulls
 
+                            -- **Tips
+                            -- $tips
+
                             -- **Other Workarounds
                             -- $other
                              PGException(..)
@@ -74,16 +77,18 @@ import Database.TemplatePG.SQL
 -- with @$()@. It requires a 'Handle' to a PostgreSQL server, but can't be
 -- given one at compile-time, so you need to pass it after the splice:
 --
--- @h <- pgConnect ...@
+-- @h <- pgConnect ...
 -- 
--- @tuples <- $(queryTuples \"SELECT * FROM pg_database\") h@
+-- tuples <- $(queryTuples \"SELECT * FROM pg_database\") h
+-- @
 --
 -- To pass parameters to a query, include them in the string with {}. Most
 -- Haskell expressions should work. For example:
 --
--- @let owner = 33@
+-- @let owner = 33
 -- 
--- @tuples <- $(queryTuples \"SELECT * FROM pg_database WHERE datdba = {owner} LIMIT {2 * 3}\") h@
+-- tuples <- $(queryTuples \"SELECT * FROM pg_database WHERE datdba = {owner} LIMIT {2 * 3}\") h
+-- @
 --
 -- Note that parameters may only be used where PostgreSQL will allow them. This
 -- will not work:
@@ -139,6 +144,20 @@ import Database.TemplatePG.SQL
 -- result field back to a non-@NULL@ table column. As a workround, you can wrap
 -- columns with @COALESCE()@ to force them to be returned as 'Maybe' values.
 
--- $other There's no support for reading time intervals yet. As a workaround,
--- you can use @extract(epoch from ...)::int@ to get the interval as a number
--- of seconds.
+-- $other
+-- There's no support for reading time intervals yet. As a workaround, you can
+-- use @extract(epoch from ...)::int@ to get the interval as a number of
+-- seconds.
+
+-- $tips
+-- If you find yourself pattern matching on result tuples just to pass them on
+-- to functions, you can use @uncurryN@ from the tuple package. The following
+-- examples are equivalent.
+--
+-- @(a, b, c) <- $(queryTuple \"SELECT a, b, c FROM {tableName} LIMIT 1\")
+--
+-- someFunction a b c
+-- @
+--
+-- @uncurryN someFunction \`liftM\` $(queryTuple \"SELECT a, b, c FROM {tableName} LIMIT 1\")
+-- @
