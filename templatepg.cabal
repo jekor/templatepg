@@ -1,5 +1,5 @@
 Name:          templatepg
-Version:       0.2.2
+Version:       0.2.3
 Cabal-Version: >= 1.4
 License:       BSD3
 License-File:  COPYING
@@ -9,7 +9,7 @@ Maintainer:    jekor@jekor.com
 Stability:     alpha
 Bug-Reports:   https://github.com/jekor/templatepg/issues
 Homepage:      https://github.com/jekor/templatepg
-Package-URL:   http://jekor.com/templatepg/templatepg-0.2.0.tar.gz
+Package-URL:   https://github.com/jekor/templatepg/archive/master.tar.gz
 Category:      Database
 Synopsis:      A PostgreSQL access library with compile-time SQL type inference
 Description:   TemplatePG provides PostgreSQL access from Haskell via the
@@ -19,7 +19,7 @@ Description:   TemplatePG provides PostgreSQL access from Haskell via the
                This also reduces boilerplate code for dealing with query
                results, as the type and number of result columns are known at
                compile-time.
-Tested-With:   GHC == 7.4.1
+Tested-With:   GHC == 7.4.2
 Build-Type:    Simple
 
 Library
