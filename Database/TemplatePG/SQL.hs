@@ -154,8 +154,7 @@ withTransaction h a =
 rollback :: Handle -> IO ()
 rollback = executeSimpleStatement "ROLLBACK"
 
--- |Run an INSERT statement, ignoring duplicate key errors. This is also
--- limited to the 'IO' Monad. Untested.
+-- |Ignore duplicate key errors. This is also limited to the 'IO' Monad.
 insertIgnore :: IO () -> IO ()
 insertIgnore q = catchJust uniquenessError q (\ _ -> return ())
  where uniquenessError e = case e of
