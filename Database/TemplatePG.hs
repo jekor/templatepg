@@ -1,4 +1,4 @@
--- Copyright 2010, 2011, 2012 Chris Forno
+-- Copyright 2010, 2011, 2012, 2013 Chris Forno
 
 module Database.TemplatePG (-- *Introduction
                             -- $intro
@@ -58,7 +58,7 @@ import Database.TemplatePG.SQL
 -- these at some point in the future. In the meantime, use the software at your
 -- own risk. Note however that TemplatePG is currently powering
 -- <http://www.vocabulink.com/> with no problems yet. (For usage examples, you
--- can see the Vocabulink source code at <http://jekor.com/vocabulink/vocabulink.tar.gz>).
+-- can see the Vocabulink source code at <https://github.com/jekor/vocabulink>).
 --
 -- To improve performance, TemplatePG does not use prepared statements. In
 -- theory, this saves bandwidth (and a potential round-trip) and time for the
