@@ -1,9 +1,9 @@
 Name:          templatepg
-Version:       0.2.3
+Version:       0.2.4
 Cabal-Version: >= 1.4
 License:       BSD3
 License-File:  COPYING
-Copyright:     2010, 2011, 2012 Chris Forno
+Copyright:     2010, 2011, 2012, 2013 Chris Forno
 Author:        Chris Forno (jekor)
 Maintainer:    jekor@jekor.com
 Stability:     alpha
@@ -46,4 +46,4 @@ Library
               DeriveDataTypeable,
               ExistentialQuantification,
               TemplateHaskell
-  GHC-Options: -Wall
+  GHC-Options: -Wall -fno-warn-type-defaults
