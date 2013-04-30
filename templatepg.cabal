@@ -22,6 +22,10 @@ Description:   TemplatePG provides PostgreSQL access from Haskell via the
 Tested-With:   GHC == 7.4.2
 Build-Type:    Simple
 
+source-repository head
+  type:     git
+  location: git://github.com/jekor/templatepg.git
+
 Library
   Build-Depends:
     base >= 4 && < 6,
