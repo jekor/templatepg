@@ -6,6 +6,7 @@
 * On disconnect, send a close message?
 * Figure out how to make withTransaction useable in other monads.
 * Add support for enumerated types (look in pg_enum with unknown types).
+* Support IS NULL insertion for = Nothing.
 * Add explicit casts to all values going in:
     $(execute
       "UPDATE link_to_review \

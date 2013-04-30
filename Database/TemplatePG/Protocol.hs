@@ -1,4 +1,4 @@
--- Copyright 2010, 2011, 2012 Chris Forno
+-- Copyright 2010, 2011, 2012, 2013 Chris Forno
 
 -- |The Protocol module allows for direct, low-level communication with a
 --  PostgreSQL server over TCP/IP. You probably don't want to use this module
@@ -21,6 +21,7 @@ import qualified Data.Binary.Builder as B
 import qualified Data.Binary.Get as G
 import qualified Data.Binary.Put as P
 import Data.ByteString.Internal (c2w, w2c)
+import qualified Data.ByteString.Lazy.Char8 as B8
 import Data.ByteString.Lazy as L hiding (take, repeat, map, any, zipWith)
 import Data.ByteString.Lazy.UTF8 hiding (length, decode, take)
 import Data.Monoid
@@ -248,7 +249,7 @@ getMessageBody typ =
 pgSend :: Handle -> PGMessage -> IO ()
 pgSend h msg = do
   d <- debug
-  if d then putStrLn (encode msg) else return ()
+  if d then B8.putStrLn (encode msg) else return ()
   hPut h (encode msg) >> hFlush h
 
 -- |Receive the next message from PostgreSQL (low-level). Note that this will
@@ -261,7 +262,7 @@ pgReceive h = do
   if d
     then do putStr (P.runPut (do P.putWord8 typ
                                  P.putWord32be (fromIntegral len)))
-            putStrLn body
+            B8.putStrLn body
             hFlush stdout
     else return ()
   let msg = decode $ cons typ (append (B.toLazyByteString $ B.putWord32be $ fromIntegral len) body)

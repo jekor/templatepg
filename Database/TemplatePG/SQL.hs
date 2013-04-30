@@ -1,4 +1,4 @@
--- Copyright 2010, 2011, 2012 Chris Forno
+-- Copyright 2010, 2011, 2012, 2013 Chris Forno
 
 -- |This module exposes the high-level Template Haskell interface for querying
 -- and manipulating the PostgreSQL server.
@@ -33,7 +33,7 @@ import System.IO
 import System.IO.Error (isDoesNotExistError)
 import Text.ParserCombinators.Parsec
 
-import Prelude hiding (catch, exp)
+import Prelude hiding (exp)
 
 -- |Grab a PostgreSQL connection for compile time. We do so through the
 -- environment variables: @TPG_DB@, @TPG_HOST@, @TPG_PORT@, @TPG_USER@, and
