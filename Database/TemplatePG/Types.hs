@@ -1,4 +1,4 @@
--- Copyright 2010, 2011 Chris Forno
+-- Copyright 2010, 2011, 2013 Chris Forno
 
 -- |All type conversion to and from the PostgreSQL server is handled here.
 
@@ -59,16 +59,25 @@ pgTypeFromOID n    = error $ "Unknown PostgreSQL type: " ++ show n
 pgTimestampTZFormat :: String
 pgTimestampTZFormat = "%F %T%z"
 
-type ShowIntegral a = (Integral a, Show a)
-type ShowReal a = (Real a, Show a)
+readIntegral :: (Read a, Integral a) => String -> a
+readIntegral = read
+
+readReal :: (Read a, Real a) => String -> a
+readReal = read
+
+showIntegral :: (Show a, Integral a) => a -> String
+showIntegral = show
+
+showReal :: (Show a, Real a) => a -> String
+showReal = show
 
 -- |Convert a Haskell value to a string of the given PostgreSQL type. Or, more
 -- accurately, given a PostgreSQL type, create a function for converting
 -- compatible Haskell values into a string of that type.
 -- @pgTypeToString :: PGType -> (? -> String)@
 pgTypeToString :: PGType -> Q Exp
-pgTypeToString PGInteger     = [| show::(ShowIntegral a => a -> String) |]
-pgTypeToString PGReal        = [| show::(ShowReal a => a -> String) |]
+pgTypeToString PGInteger     = [| showIntegral |]
+pgTypeToString PGReal        = [| showReal |]
 pgTypeToString PGText        = [| escapeString |]
 pgTypeToString PGBoolean     = [| (\ b -> if b then "'t'" else "'f'") |]
 pgTypeToString PGTimestampTZ = [| \t -> let ts = formatTime defaultTimeLocale pgTimestampTZFormat t in
@@ -84,8 +93,8 @@ pgTypeToString PGInterval    = [| \s -> "'" ++ show (s::DiffTime) ++ "'" |]
 -- @pgStringToType :: PGType -> (String -> ?)@
 pgStringToType :: PGType -> Q Exp
 -- TODO: Is reading to any integral type too unsafe to justify the convenience?
-pgStringToType PGInteger     = [| read::((Read a, Integral a) => String -> a) |]
-pgStringToType PGReal        = [| read::(String -> Float) |]
+pgStringToType PGInteger     = [| readIntegral |]
+pgStringToType PGReal        = [| readReal |]
 pgStringToType PGText        = [| id |]
 pgStringToType PGBoolean     = [| \s -> case s of
                                           "t" -> True
