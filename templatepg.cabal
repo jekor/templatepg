@@ -1,5 +1,5 @@
 Name:          templatepg
-Version:       0.2.5
+Version:       0.2.6
 Cabal-Version: >= 1.6
 License:       BSD3
 License-File:  COPYING
@@ -19,7 +19,7 @@ Description:   TemplatePG provides PostgreSQL access from Haskell via the
                This also reduces boilerplate code for dealing with query
                results, as the type and number of result columns are known at
                compile-time.
-Tested-With:   GHC == 7.4.2
+Tested-With:   GHC == 7.6.3
 Build-Type:    Simple
 
 source-repository head

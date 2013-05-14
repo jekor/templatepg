@@ -15,6 +15,7 @@ module Database.TemplatePG.SQL ( queryTuples
                                , insertIgnore
                                , withTransaction
                                , rollback
+                               , thConnection
                                ) where
 
 import Database.TemplatePG.Protocol
