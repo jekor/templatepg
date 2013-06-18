@@ -141,6 +141,10 @@ import Database.TemplatePG.SQL
 -- incorrectly infers that a field cannot be @NULL@ when it's able to trace the
 -- result field back to a non-@NULL@ table column. As a workround, you can wrap
 -- columns with @COALESCE()@ to force them to be returned as 'Maybe' values.
+--
+-- Because TemplatePG has to prepare statements at compile time and
+-- placeholders can't be used in place of lists in PostgreSQL (such as @IN
+-- (?)@), it's not currently possible to use non-static @IN ()@ clauses.
 
 -- $other
 -- There's no support for reading time intervals yet. As a workaround, you can
