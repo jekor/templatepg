@@ -1,5 +1,3 @@
--- Copyright 2010, 2011, 2013 Chris Forno
-
 -- |All type conversion to and from the PostgreSQL server is handled here.
 
 module Database.TemplatePG.Types ( PGType(..)

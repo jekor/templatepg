@@ -1,5 +1,3 @@
--- Copyright 2010, 2011, 2012, 2013 Chris Forno
-
 -- |This module exposes the high-level Template Haskell interface for querying
 -- and manipulating the PostgreSQL server.
 -- 

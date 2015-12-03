@@ -1,8 +1,8 @@
 Name:          templatepg
 Version:       0.2.6
 Cabal-Version: >= 1.6
-License:       BSD3
-License-File:  COPYING
+License:       MIT
+License-File:  LICENSE
 Copyright:     2010, 2011, 2012, 2013 Chris Forno
 Author:        Chris Forno (jekor)
 Maintainer:    jekor@jekor.com

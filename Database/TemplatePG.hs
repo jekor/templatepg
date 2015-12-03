@@ -1,5 +1,3 @@
--- Copyright 2010, 2011, 2012, 2013 Chris Forno
-
 module Database.TemplatePG (-- *Introduction
                             -- $intro
 
