@@ -1,9 +1,9 @@
 Name:          templatepg
-Version:       0.2.6
+Version:       0.2.7
 Cabal-Version: >= 1.6
 License:       MIT
 License-File:  LICENSE
-Copyright:     2010, 2011, 2012, 2013 Chris Forno
+Copyright:     2010, 2011, 2012, 2013, 2015 Chris Forno
 Author:        Chris Forno (jekor)
 Maintainer:    jekor@jekor.com
 Stability:     alpha
@@ -19,7 +19,7 @@ Description:   TemplatePG provides PostgreSQL access from Haskell via the
                This also reduces boilerplate code for dealing with query
                results, as the type and number of result columns are known at
                compile-time.
-Tested-With:   GHC == 7.6.3
+Tested-With:   GHC == 7.10.2
 Build-Type:    Simple
 
 source-repository head
@@ -28,13 +28,12 @@ source-repository head
 
 Library
   Build-Depends:
-    base >= 4 && < 6,
+    base >= 4.8 && < 4.9,
     binary,
     bytestring,
     haskell-src-meta,
     mtl,
     network,
-    old-locale,
     parsec,
     regex-compat,
     regex-posix,

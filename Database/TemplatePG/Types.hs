@@ -10,7 +10,6 @@ import Data.Time.Calendar
 import Data.Time.Clock
 import Data.Time.Format
 import Language.Haskell.TH
-import System.Locale
 import Text.Regex
 
 -- |TemplatePG currenly only supports a handful of types. It also doesn't
