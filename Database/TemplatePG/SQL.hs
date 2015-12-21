@@ -63,6 +63,7 @@ prepareSQL sql = do
   let (sqlStrings, expStrings) = parseSql sql
   (pTypes, fTypes) <- runIO $ describeStatement h $ holdPlaces sqlStrings expStrings
   s <- weaveString sqlStrings =<< zipWithM stringify pTypes expStrings
+  runIO (pgDisconnect h)
   return (s, fTypes)
  where holdPlaces ss es = concat $ weave ss (take (length es) placeholders)
        placeholders = map (('$' :) . show) ([1..]::[Integer])
