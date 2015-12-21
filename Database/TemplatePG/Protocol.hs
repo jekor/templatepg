@@ -74,6 +74,7 @@ data PGMessage = Authentication
                -- |SimpleQuery takes a simple SQL string. Parameters ($1, $2,
                --  etc.) aren't allowed.
                | SimpleQuery String
+               | Terminate
                | UnknownMessage
 
 -- |PGException is thrown upon encountering an 'ErrorResponse' with severity of
@@ -123,7 +124,7 @@ pgConnect host port db user _ = do
 -- a close message.
 pgDisconnect :: Handle -- ^ a handle from 'pgConnect'
              -> IO ()
-pgDisconnect = hClose
+pgDisconnect h = pgSend h Terminate >> hClose h
 
 -- |Convert a string to a NULL-terminated UTF-8 string. The PostgreSQL
 --  protocol transmits most strings in this format.
@@ -152,6 +153,7 @@ pgMessageID m = c2w $ case m of
                   ReadyForQuery            -> 'Z'
                   (RowDescription _)       -> 'T'
                   (SimpleQuery _)          -> 'Q'
+                  Terminate                -> 'X'
                   UnknownMessage           -> error "Unknown message type"
 
 -- |All PostgreSQL messages have a common header: an identifying character and
@@ -181,6 +183,7 @@ putMessageBody Execute         = mconcat [pgString "", B.putWord32be 0]
 putMessageBody Flush           = B.empty
 putMessageBody (Parse s n)     = mconcat [pgString n, pgString s, B.putWord16be 0]
 putMessageBody (SimpleQuery s) = pgString s
+putMessageBody Terminate       = B.empty
 putMessageBody _               = undefined
 
 -- |Get the type and size of an incoming message.
